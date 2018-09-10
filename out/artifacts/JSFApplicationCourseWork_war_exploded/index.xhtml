@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+   <title>My Flying App</title>
+    <link rel="stylesheet" type="text/css" href="css/mycss.css"/>
+</h:head>
+<h:body>
+   <f:view>
+       <h1><h:outputLabel value="Hello, visitor! Please enter values in order to search for tickets' availability!"/></h1>
+   </f:view>
+   <br/>
+   <br/>
+
+   <h:form>
+      <h:outputText value="Departure:"/>
+      <h:selectOneMenu id="menuDeparture" value="#{flight_bean_controller.departure}">
+         <f:selectItem itemLabel="--All--"/>
+         <f:selectItems value="#{flights_list_bean.departures}"/>
+      </h:selectOneMenu>
+      <br/><br/>
+      <h:outputText value="Destination:"/>
+      <h:selectOneMenu id="menuDestination" value="#{flight_bean_controller.destination}">
+         <f:selectItem itemLabel="--All--"/>
+         <f:selectItems value="#{flights_list_bean.destinations}"/>
+      </h:selectOneMenu>
+      <br/><br/>
+      <h:outputText value="From date (yyyy-mm-dd) :"/>
+      <h:inputText id="date1" value="#{flight_bean_controller.date1}">
+         <f:convertDateTime pattern="yyyy-MM-dd" />
+      </h:inputText>
+      <br/><br/>
+      <h:outputText value="Until date (yyyy-mm-dd) :"/>
+      <h:inputText id="date2" value="#{flight_bean_controller.date2}">
+         <f:convertDateTime pattern="yyyy-MM-dd" />
+      </h:inputText>
+      <br/><br/>
+      <h:outputText value="Highest price of ticket :" />
+      <h:inputText value="#{flight_bean_controller.price}" required="true" requiredMessage="A price is required">
+         <f:convertNumber integerOnly="true"/>
+         <f:validateLongRange minimum="0"/>
+      </h:inputText>
+      <br/><br/>
+      <h:messages id="messagestxt" style="color:red"/>
+      <br/><br/>
+      <h:commandButton value="Search Flights" action="#{flight_bean_controller.proceed}">
+       <f:actionListener binding="#{flights_list_bean.newLists()}" />
+       <f:ajax execute="@form" render="results2 results3 messagestxt menuDeparture menuDestination"/>
+   </h:commandButton>
+       <button type="reset">Reset</button>
+       <a href="manage-database.xhtml"><button type="button">Manage Database</button></a>
+       <br/><br/>
+       <h:outputText value="#{flight_bean_controller.msg}" id="results3" style="color:brown"/>
+       <br/><br/>
+      <h:dataTable var="flight"
+                   value="#{flight_bean_controller.list}"
+                   border="2" id="results2" styleClass="table"
+                   captionClass="caption1"
+                   headerClass="headings">
+          <f:facet name="caption">Available flights according to searching criteria</f:facet>
+          <h:column><f:facet name="header">Flight Id</f:facet>#{flight.flightId}</h:column>
+          <h:column><f:facet name="header">Departure</f:facet>#{flight.departure}</h:column>
+         <h:column><f:facet name="header">Destination</f:facet>#{flight.destination}</h:column>
+         <h:column><f:facet name="header">Date</f:facet>#{flight.date}</h:column>
+          <h:column><f:facet name="header">Departure's Hour</f:facet>#{flight.hour}</h:column>
+          <h:column><f:facet name="header">Price ($)</f:facet>#{flight.price}</h:column>
+          <h:column><f:facet name="header">Available # of tickets</f:facet>#{flight.tickets}</h:column>
+      </h:dataTable>
+   </h:form>
+
+</h:body>
+ </html>

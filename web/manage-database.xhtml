@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+    <title>My Flying App</title>
+    <link rel="stylesheet" type="text/css" href="css/mycss.css"/>
+</h:head>
+<h:body>
+    <f:view>
+        <h1><h:outputLabel value="Manage the Database!"/></h1>
+    </f:view>
+    <br/>
+    <br/>
+
+
+    <h:form>
+        <br/>
+        <f:view>
+            <h3><h:outputLabel value="Insert flight into Database!"/></h3>
+        </f:view>
+        <br/>
+        <h:outputText value="Enter a Departure:"/>
+        <h:inputText value="#{flightDto.departure}" required="true" requiredMessage="Departure is required">
+            <f:validateLength minimum = "3" maximum = "40" />
+        </h:inputText>
+        <br/><br/>
+        <h:outputText value="Enter a Destination:"/>
+        <h:inputText value="#{flightDto.destination}" required="true" requiredMessage="Destination is required">
+            <f:validateLength minimum = "3" maximum = "40" />
+        </h:inputText>
+        <br/><br/>
+        <h:outputText value="Enter a date (yyyy-mm-dd) :"/>
+        <h:inputText value="#{flightDto.date}" required="true" requiredMessage="Date is required">
+            <f:convertDateTime pattern="yyyy-MM-dd" />
+        </h:inputText>
+        <br/><br/>
+        <h:outputText value="Enter price of ticket:" />
+        <h:inputText value="#{flightDto.price}" required="true" requiredMessage="Price is required">
+            <f:convertNumber integerOnly="true"/>
+            <f:validateLongRange minimum = "10" maximum = "100000" />
+        </h:inputText>
+        <br/><br/>
+        <h:outputText value="Enter available tickets:" />
+        <h:inputText value="#{flightDto.tickets}" required="true" requiredMessage="Number of tickets is required">
+            <f:convertNumber integerOnly="true"/>
+            <f:validateLongRange minimum="0" maximum="1000"/>
+        </h:inputText>
+        <br/><br/>
+        <h:outputText value="Enter departure's hour (hh.mm):" />
+        <h:inputText value="#{flightDto.hour}" required="true" requiredMessage="Departure's hour is required">
+            <f:validateLength minimum = "5" maximum = "5" />
+            <f:validateRegex pattern = "[0-2][0-9].[0-5][0-9]" />
+        </h:inputText>
+        <br/><br/>
+        <h:messages id="messagestxt" style="color:red"/>
+        <br/><br/>
+        <h:commandButton value="Insert Flight" action="#{flightDto.proceed2}">
+            <f:ajax execute="@form" render="results11 messagestxt"/>
+        </h:commandButton>
+        <button type="reset">Reset</button>
+        <a href="index.xhtml"><button type="button">Go to Search Flights Page</button></a>
+        <br/><br/>
+        <h:outputText value="#{flightDto.result}" id="results11" style="color:forestgreen"/>
+    </h:form>
+
+    <h:form>
+        <br/>
+        <f:view>
+            <h3><h:outputLabel value="Delete a Flight from Database!"/></h3>
+        </f:view>
+        <br/>
+        <h:outputText value="Insert flight's Id:"/>
+        <h:inputText value="#{flightDto.flightId}" required="true" requiredMessage="Flight's ID is required">
+            <f:convertNumber integerOnly="true"/>
+        </h:inputText>
+        <br/><br/>
+        <h:messages id="messagestxt2" style="color:red"/>
+        <br/><br/>
+        <h:commandButton value="Delete Flight" action="#{flightDto.proceed3}">
+            <f:ajax execute="@form" render="results123 messagestxt2"/>
+        </h:commandButton>
+        <button type="reset">Reset</button>
+        <br/><br/>
+        <h:outputText value="#{flightDto.result2}" id="results123" style="color:forestgreen"/>
+    </h:form>
+</h:body>
+</html>
